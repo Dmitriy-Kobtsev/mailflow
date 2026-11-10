@@ -79,10 +79,26 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+def require_env(name):
+    """
+    Функция отслеживания задания переменных окружения
+    :param name:
+    :return:
+    """
+    value = os.getenv(name)
+    if value is None:
+        raise ImproperlyConfigured(f'Переменная окружения {name} не задана')
+    return value
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': require_env('DB_NAME'), # Название БД
+        'USER': require_env('DB_USER'), # Пользователь для подключения
+        'PASSWORD': require_env('DB_PASSWORD'), # Пароль для этого пользователя
+        'HOST': require_env('DB_HOST'), # Адрес, на котором развернут сервер БД
+        'PORT': require_env('DB_PORT'), # Порт, на котором работает сервер БД
     }
 }
 
