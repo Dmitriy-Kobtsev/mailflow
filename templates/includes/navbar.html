@@ -1,0 +1,68 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+
+    {# Бренд — ссылка на главную #}
+    <a class="navbar-brand" href="/">Mailflow</a>
+
+    {# Кнопка-бургер для мобильных #}
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+            aria-controls="mainNavbar" aria-expanded="false"
+            aria-label="Переключить навигацию">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    {# Основное меню, сворачивается на мобильных #}
+    <div class="collapse navbar-collapse" id="mainNavbar">
+
+      {# Левая часть — разделы сервиса. Пока заглушки (#), URL появятся позже. #}
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="#">Рассылки</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Клиенты</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Отчёты</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Блог</a>
+        </li>
+
+        {% if user.is_authenticated and user.role == 'manager' %}
+          <li class="nav-item">
+            <a class="nav-link" href="/admin/users/user/">Пользователи</a>
+          </li>
+        {% endif %}
+      </ul>
+
+      {# Правая часть — блок аутентификации #}
+      <ul class="navbar-nav ms-auto align-items-lg-center">
+
+        {% if user.is_authenticated %}
+          {# Приветствие #}
+          <li class="nav-item">
+            <span class="navbar-text me-lg-3">{{ user.email }}</span>
+          </li>
+
+          {# Выход — обязательна POST-форма (Django 5 не принимает GET на logout) #}
+          <li class="nav-item">
+            <form method="post" action="{% url 'logout' %}" class="d-inline">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-outline-light btn-sm">Выйти</button>
+            </form>
+          </li>
+        {% else %}
+          {# Для гостя #}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Войти</a>
+          </li>
+        {% endif %}
+
+      </ul>
+    </div>
+  </div>
+</nav>

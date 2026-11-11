@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Mailflow{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  {% include 'includes/navbar.html' %}
+
+  <main class="container py-4 flex-grow-1">
+    {% include 'includes/messages.html' %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="container py-3 text-muted small border-top">
+    Mailflow &copy; {% now "Y" %}
+  </footer>
+
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
